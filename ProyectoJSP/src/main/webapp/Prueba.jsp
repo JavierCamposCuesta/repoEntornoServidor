@@ -15,7 +15,7 @@ int hora = ahora.get(java.util.Calendar.HOUR_OF_DAY);
 <% if (hora>20 || hora<6) { %>
 	buenas noches
 <% }
-   else if (hora >=6 && hora <=12) {%>
+   else if (hora >=5 && hora <=12) {%>
    buenos días
 <%		}
 		else {%>
