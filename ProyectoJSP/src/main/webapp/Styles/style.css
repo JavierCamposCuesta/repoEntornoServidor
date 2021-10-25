@@ -1,0 +1,316 @@
+/*primario #008585
+secundario #b0bec5
+light #e2f1f8
+bordes ##00eeff
+fondo #ee98fb
+
+*/
+body {
+	background: #e2f1f8;
+}
+.cabecera {
+	color: #e2f1f8;
+	background: #008585;
+	padding: 30px;
+	text-align: center;
+	border-bottom: 6px solid #00eeff;
+
+}
+.cuerpo {
+	margin-left: 100px;
+	margin-right: 100px;
+	text-align: justify;
+}
+/*seleccionamos dentro del cuerpo el h3 para centrarlo*/
+.cuerpo > h3 {
+	text-align: center;
+}
+
+/*damos estilo al boton*/ 
+a.boton, input.boton{ /*esta clase nos la pondra en los a que sean botones y el los inputs que sean botones*/
+	background: #008585;
+	color: white;
+	border: 1px solid black;
+	text-decoration: none; /*esto es para quitarle el subrayado al link*/
+	padding: 6px;
+	border-radius: 6px; /*esto es para redondear los bordes del boton*/
+	cursor: pointer; /*esto es para que nos ponga la manita cuando nos colocamos encima del boton*/
+}
+
+/*Hacemos que el boton cambie de color cuando nos colocamos encima*/
+a.boton:hover, input.boton:hover{
+	background: #00eeff;
+	color: black;
+
+}
+
+/*le damos estilo al pie de pagina*/
+.footer {
+	
+	border-top: 2px solid #b0bec5;
+	margin-left: 0px;
+	margin-right: 0px;
+	background: #008585; 
+}
+
+/*ponemos dos div como columnas ajustanto el ancho*/
+.footer > div {
+	width: 30%;
+	display: inline-block; /*esto sirve para poner los bloques en linea*/
+	margin-right: 15px;
+	margin-left: 15px;
+}
+
+form { /*damos estilo al formulario*/
+	border: 1px solid black;
+	border-radius: 10px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 50px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	background: white;
+	width: 60%;
+
+}
+
+form div { /*separamos el formulario de los bordes*/
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+	width: 90%;
+	
+}
+.divForm{
+	width: 55%;
+	
+}
+
+form div label { /*aqui le damos un espacio a los inputs*/
+	margin-left:auto;
+	margin-right:auto;
+	width: 150px;
+	display: inline-block; /*los label son contenedores del ancho de la palabra (igual que los span), por lo que tenemos que decirle que lo trate como un unico bloque*/
+}
+
+.botonInicio{
+	text-align:center;
+	margin-top: 15px;
+}
+
+.botonInicio input{
+	background: #e2f1f8;
+}
+
+.botonInicio input:hover{
+	background: #008585;
+	color: white;
+}
+.tituloIndex{
+	text-align: center;
+	
+	
+}
+
+/* Stylos header */
+.divImgHeader,img{
+	width:150px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+.divHeader{
+	background: #008585; 
+}
+
+.divMenuHeader{
+	
+	width: 40%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	bottom: -15px;
+	
+}
+.enlaceHeader{
+	
+	margin-left: 5px;
+	margin-right: 5px;
+	background: #2DF3AF;
+	color: black;
+	text-decoration: none;
+	padding-bottom:8px;
+	padding-top: 8px;
+	width: 25%;
+	display: inline-block;
+	border-radius: 8px;
+}
+.enlaceHeader:hover{
+	background: #024439;
+	color: white;
+}
+
+.container{
+	
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	background: #e2f1f8;
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	height: 100%;
+	padding-top: 30px;
+}
+
+
+
+
+/* Pagina Bienvenida.jsp  -----------------------------------*/
+.contenido{
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.contador p{
+	text-align: center;
+	background: #008585; 
+	width: 15%;
+	margin-right: 0px;
+	margin-left: auto;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: white;
+	border-radius: 8px;
+}
+
+.divImgIzquierda{
+	float: left;
+	width: 20%;
+	
+}
+
+.divImgIzquierda img{
+	
+	width: 100%;
+	height: 30%;
+	
+	
+}
+
+.divImgDerecha{
+	
+	margin-left: 3%;
+	
+	margin-left: 50px;
+	float: left;
+	width: 70%
+	
+}
+
+.divImgDerecha a{
+	margin-left: 5%;
+	background: #2DF3AF;
+	color: black;
+	text-decoration: none;
+	padding-bottom:8px;
+	padding-top: 8px;
+	width: 30%;
+	display: inline-block;
+	border-radius: 8px; 
+	text-align: center;
+	margin-top: 5%;
+	
+}
+
+
+.divImgDerecha a:hover{
+	background: #024439;
+	color: white;
+}
+
+
+.divImgAbajo{
+	clear: both;
+}
+
+.divImgAbajo p{
+	padding-top:  10px;
+	margin-left: 10px;
+}
+
+/* Pagina mi anuncio --------------------------------*/
+.divTitulo p{
+	
+}
+
+.divTitulo1{
+	float: left;
+	font-size: 25px;
+}
+.divTitulo2{
+	float: right;
+	font-size: 25px;
+	background: #008585; 
+	color: white;
+	padding: 8px;
+	border-radius: 8px;
+}
+
+.divDescripcion{
+	clear: both;
+	border: 1px solid black;
+	padding: 10px;
+}
+
+
+
+.divYearKm{
+	text-align: center;
+
+}
+
+.divYearKm p{
+	margin-left: 5%;
+	background: #2DF3AF;
+	color: black;
+	text-decoration: none;
+	padding-bottom:8px;
+	padding-top: 8px;
+	width: 20%;
+	border-radius: 8px; 
+	text-align: center;
+	margin-top: 5%;
+	display: inline-block;
+}
+
+.divImgAnuncio{
+	text-align: center;
+}
+.divImgAnuncio img{
+	width: 70%;
+	height: auto;
+	max-height: 400px;
+}
+
+
+
+/* jsp -----------------------------------------------------*/
+
+.mensaje-enviado{
+	margin-top: 50px;
+	text-align: center;
+}
+
+.mensaje-enviado > span { /*para poder poner el mensaje como queremos, ya que solo con el p es mas complicado*/
+	color: green;
+	background: white;
+	padding: 6px;
+	border: solid black 1px;
+	border-radius: 6px;
+}
+
