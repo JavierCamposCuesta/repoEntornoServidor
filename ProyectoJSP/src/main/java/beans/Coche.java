@@ -1,5 +1,10 @@
 package beans;
 
+/**
+ * 
+ * @author Javier Campos Cuesta
+ *
+ */
 public class Coche {
 	private String marca;
 	private String modelo;
@@ -9,6 +14,10 @@ public class Coche {
 	private int precio;
 	private String descripcion;
 	
+	
+	/**
+	 * Constructor para el coche, este contructor es vacio
+	 */
 	public Coche() {
 		
 	}
@@ -29,7 +38,12 @@ public class Coche {
 		
 	}
 
-	public void setMarca(String marca) throws Exception{
+	/**
+	 * 
+	 * @param Le pasamos el String marca recogido del formulario
+	 *
+	 */
+	public void setMarca(String marca){
 			this.marca=marca;
 	}
 	
@@ -48,30 +62,62 @@ public class Coche {
 		}
 	}
 
+	/**
+	 * 
+	 * @param Le pasamos el String modelo recogido del formulario
+	 *
+	 */
 	public void setModelo(String modelo){
 			this.modelo=modelo;
 	}
 
+	/**
+	 * 
+	 * @return devuelve el int km
+	 */
 	public int getKm() {
 		return km;
 	}
 
+	/**
+	 * 
+	 * @param Le pasamos el int km recogido del formulario
+	 *
+	 */
 	public void setKm(int km) {
 		this.km = km;
 	}
 
+	/**
+	 * 
+	 * @return devuelve el int year
+	 */
 	public int getYear() {
 		return year;
 	}
 
+	/**
+	 * 
+	 * @param Le pasamos el int year recogido del formulario
+	 *
+	 */
 	public void setYear(int year) {
 		this.year = year;
 	}
 
+	/**
+	 * 
+	 * @return devulve el String combustible
+	 */
 	public String getCombustible() {
 		return combustible;
 	}
 
+	/**
+	 * 
+	 * @param Le pasamos el String combustible recogido del formulario
+	 *
+	 */
 	public void setCombustible(String combustible) {
 		this.combustible = combustible;
 	}
@@ -95,6 +141,11 @@ public class Coche {
 		
 	}
 
+	/**
+	 * 
+	 * @param Le pasamos el int precio recogido del formulario
+	 *
+	 */
 	public void setPrecio(int precio) throws Exception {
 		
 			this.precio=precio;
