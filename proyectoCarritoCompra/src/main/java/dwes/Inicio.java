@@ -39,7 +39,7 @@ public class Inicio extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+
 		HttpSession sesion = request.getSession();
 		Usuario usuario = new Usuario();
 		String nombre = request.getParameter("nombre");
@@ -49,6 +49,8 @@ public class Inicio extends HttpServlet {
 			sesion.setAttribute("nombre", nombre);
 			sesion.setAttribute("primeraVez", true);
 			sesion.setAttribute("datosIncorrectos", "false");
+			sesion.setAttribute("borrarSi", false);
+			
 			
 			
 			//El request.getContectPath() es para indicar la url actual y le sumamos a donde va a ir

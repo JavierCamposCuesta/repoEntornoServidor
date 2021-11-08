@@ -52,15 +52,16 @@ i{
                     <h4>Método de envío</h4>
                 </div>
 
+       <form  action="/proyectoCarritoCompra/Factura" method="post">
                 <div class="d-flex">
-                    <input type="radio" name=""envio"" value="Estandar" checked class="mt-4">
+                    <input type="radio" name="envio" value="Estandar" checked class="mt-4">
                     <img src="https://gssecurity.es/wp-content/uploads/2019/07/seur.png">
                     <p class="mt-4">Envío de 3-5 días laborables (<b>GRATIS</b>)</p>
                 </div>
 
 
                 <div class="d-flex">
-                    <input type="radio" name=""envio"" value="Premium" class="mt-4">
+                    <input type="radio" name="envio" value="Premium" class="mt-4">
                     <img src="https://gls-group.eu/ES/media/images/Video_Sound_Images_GLS_Logo_Positive_200x150px-35697_IMG_200x150.png">
                     <p class="mt-4">Envío de 1-3 días laborables (<b>2,99€</b>)</p>
                 </div>
@@ -88,7 +89,7 @@ i{
 
                 <div class="d-flex">
                     <input type="radio" name="pago" value="Paypal" class="mt-4">
-                    <img src="https://s3.cointelegraph.com/storage/uploads/view/3278bdc14c74dd4e85732b776d0e5b1d.png">
+                    <img src="https://s3.cointelegraph.com/storage/uploads/view/3278bdc14c74dd4e85732b776d0e5b1d.png" alt="">
                     <p class="mt-4">Pago con Paypal</p>
                 </div>
 
@@ -135,20 +136,25 @@ i{
             	<p>${producto.getPrecio() } €</p>
 			</div>
             <div class="col colAlineadoCentro">
-            	<form method="post">
-            		<input type="number" value="${producto.getCantidad()}" style="width: 50px;" step="0">
+            	<!-- Este input se creará por cada producto que haya en la cesta -->
+            	
+            		<input type="number" name="${producto.getId() }" value="${producto.getCantidad()}" style="width: 50px;">
             		
-            	</form>
+            	
 			</div>
 			 <div class="col">
-            	<form  action="/proyectoCarritoCompra/Carrito" method="post">
+			 	<!-- Con este form creamos un input con icono de papelera para borrar los productos que queramos -->
+            		<!-- En el input de tipo hidden almacenamos el id del producto que queremos borrar -->
             		<input type="hidden" name="productoId" value="${ producto.getId() }">
-            		<button type="submit" value="borrar" name="borrar"><i class="bi bi-trash"></i></button>
-            	</form>
+            		<button type="submit" value="${ producto.getId() }" name="borrar"><i class="bi bi-trash"></i></button>
 			</div>
 		</div>
 		</c:forEach>
+		<div class="d-flex justify-content-end">
+		<button type="submit" name="pagar" value="pagar" class="btn btn-primary mt-5">Terminar y pagar</button>
+		</div>
         </div>
+       </form>
 
     </div>
 

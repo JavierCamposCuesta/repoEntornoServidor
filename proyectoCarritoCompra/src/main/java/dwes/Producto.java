@@ -1,8 +1,9 @@
 package dwes;
 
+
 import java.util.Objects;
 
-public class Producto {
+public class Producto{
 private String nombre;
 private String id;
 private String imagen;

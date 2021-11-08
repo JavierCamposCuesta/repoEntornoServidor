@@ -30,11 +30,13 @@ public class Catalogo extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
+    final String LOGEADO = "LOGEADO";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		
 		//Comprobamos que existe la sesion y el usuario está logeado, si no es así lo redirigimos al inicio para que inicie sesion
-		if(!sesion.isNew() && sesion.getAttribute("LOGEADO")!=null && (boolean)sesion.getAttribute("LOGEADO")) {
+		if(!sesion.isNew() && sesion.getAttribute(LOGEADO)!=null && (boolean)sesion.getAttribute(LOGEADO)) {
 			
 			
 			
@@ -89,7 +91,7 @@ public class Catalogo extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		//Si el boton que hemos pulsado es el de ir al carrito nos mandará a al servlet de CarritoCompra
-		if(!sesion.isNew() && sesion.getAttribute("LOGEADO")!=null && (boolean)sesion.getAttribute("LOGEADO")) {
+		if(!sesion.isNew() && sesion.getAttribute(LOGEADO)!=null && (boolean)sesion.getAttribute(LOGEADO)) {
 		
 			if(request.getParameter("Ir al carrito")!=null && request.getParameter("Ir al carrito").equals("Ir al carrito")) {
 				response.sendRedirect(request.getContextPath()+"/CarritoCompra");
