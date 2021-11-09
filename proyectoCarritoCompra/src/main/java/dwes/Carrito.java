@@ -37,6 +37,7 @@ public class Carrito extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     final String LOGEADO = "LOGEADO";
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		if(!sesion.isNew() && sesion.getAttribute(LOGEADO)!=null && (boolean)sesion.getAttribute(LOGEADO)) {
@@ -50,6 +51,7 @@ public class Carrito extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		
@@ -57,7 +59,7 @@ public class Carrito extends HttpServlet {
 			
 			//Si es la primera vez que entramos en catalogo tenemos que resetear la lista de productos en carrito, para ello eliminamos todos los elementos que pueda tener
 			if((boolean) sesion.getAttribute("primeraVez")) {
-				productosEnCarrito.removeAll(productosEnCarrito);
+				productosEnCarrito.clear();
 				
 				//Modificamos el atributo
 				sesion.setAttribute("primeraVez", false);

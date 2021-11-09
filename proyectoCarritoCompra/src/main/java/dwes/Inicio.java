@@ -25,12 +25,13 @@ public class Inicio extends HttpServlet {
      */
     public Inicio() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
@@ -38,15 +39,17 @@ public class Inicio extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession sesion = request.getSession();
 		Usuario usuario = new Usuario();
-		String nombre = request.getParameter("nombre");
+		String nombre = "nombre";
+		String nombreUsuario = request.getParameter(nombre);
 		
-		if(usuario.comprobarUsuario(request.getParameter("nombre"), request.getParameter("pass"))) {
+		if(usuario.comprobarUsuario(request.getParameter(nombre), request.getParameter("pass"))) {
 			sesion.setAttribute("LOGEADO", true);
-			sesion.setAttribute("nombre", nombre);
+			sesion.setAttribute(nombre, nombreUsuario);
 			sesion.setAttribute("primeraVez", true);
 			sesion.setAttribute("datosIncorrectos", "false");
 			sesion.setAttribute("borrarSi", false);
@@ -68,7 +71,7 @@ public class Inicio extends HttpServlet {
 		}
 		
 		
-//		doGet(request, response);
+
 	}
 
 }

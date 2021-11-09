@@ -3,6 +3,11 @@ package dwes;
 
 import java.util.Objects;
 
+/**
+ * 
+ * @author Javier Campos Cuesta
+ *
+ */
 public class Producto{
 private String nombre;
 private String id;
@@ -12,6 +17,15 @@ private double precio;
 private int cantidad;
 
 
+/**
+ * 
+ * @param id
+ * @param nombre
+ * @param descripcion
+ * @param precio
+ * @param imagen
+ * @param cantidad
+ */
 public Producto( String id, String nombre, String descripcion,  double precio, String imagen, int cantidad) {
 	super();
 	this.nombre = nombre;
@@ -83,7 +97,9 @@ public int hashCode() {
 }
 
 
-
+/**
+ * Los productos se indentificarán por el id
+ */
 @Override
 public boolean equals(Object obj) {
 	if (this == obj)

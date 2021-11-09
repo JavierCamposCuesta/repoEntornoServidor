@@ -4,8 +4,8 @@
     %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+<head lang="en">
 <meta charset="UTF-8">
 <title>Catalogo</title>
 <link rel="stylesheet" type="text/css" href="style.css">

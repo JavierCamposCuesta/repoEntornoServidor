@@ -22,7 +22,7 @@ public class Factura extends HttpServlet {
      */
     public Factura() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
@@ -30,6 +30,7 @@ public class Factura extends HttpServlet {
 	 */
     
     final String LOGEADO = "LOGEADO";
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		sesion.setAttribute("borrarSi", "no");
@@ -45,6 +46,9 @@ public class Factura extends HttpServlet {
 		
 			
 			HashSet<Producto> productosEnCarrito = (HashSet<Producto>) sesion.getAttribute("productosEnCarrito");
+			
+				
+			
 			double totalSinIva=0;
 			for(Producto productoCarrito: productosEnCarrito) {
 				//Cojo el valor de cada input numerico que le asigne el nombre de la id
@@ -67,16 +71,17 @@ public class Factura extends HttpServlet {
 			double envio=0;
 			
 			//Calculamos los gastos de envío
-			if(request.getParameter("envio").equals("Premium")) {
-				sesion.setAttribute("envio", 2.99);
+			String envioParametro = "envio";
+			if(request.getParameter(envioParametro).equals("Premium")) {
+				sesion.setAttribute(envioParametro, 2.99);
 				envio = 2.99;
 			}
-			else if(request.getParameter("envio").equals("Express")) {
-				sesion.setAttribute("envio", 4.99);
+			else if(request.getParameter(envioParametro).equals("Express")) {
+				sesion.setAttribute(envioParametro, 4.99);
 				envio = 4.99;
 			}
 			else {
-				sesion.setAttribute("envio", 0);
+				sesion.setAttribute(envioParametro, 0);
 			}
 			
 			//Calculamos el total de la factura
@@ -88,17 +93,19 @@ public class Factura extends HttpServlet {
 			
 			request.getRequestDispatcher("factura.jsp").forward(request, response);
 //			}
-		}else {
-		sesion.invalidate();
-		response.sendRedirect(request.getContextPath());
-		}
+			}
+			else {
+				response.sendRedirect(request.getContextPath()+"/Catalogo");
+			}
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 

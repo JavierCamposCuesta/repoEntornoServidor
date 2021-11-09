@@ -24,14 +24,14 @@ public class Catalogo extends HttpServlet {
      */
     public Catalogo() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    
     final String LOGEADO = "LOGEADO";
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		
@@ -42,7 +42,7 @@ public class Catalogo extends HttpServlet {
 			
 			/* 
 			 * Creamos los productos con sus atributos
-			 * Metemos los productos en un ArrayList 
+			 * Metemos los productos en un HashSet
 			 * Creamos un nuevo atributo en la sesion que incluirá la lista de los productos
 			 * ...
 			 * 
@@ -88,12 +88,14 @@ public class Catalogo extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		//Si el boton que hemos pulsado es el de ir al carrito nos mandará a al servlet de CarritoCompra
+		String IrCarrito = "Ir al carrito";
 		if(!sesion.isNew() && sesion.getAttribute(LOGEADO)!=null && (boolean)sesion.getAttribute(LOGEADO)) {
 		
-			if(request.getParameter("Ir al carrito")!=null && request.getParameter("Ir al carrito").equals("Ir al carrito")) {
+			if(request.getParameter(IrCarrito)!=null && request.getParameter(IrCarrito).equals(IrCarrito)) {
 				response.sendRedirect(request.getContextPath()+"/CarritoCompra");
 		}
 			}else {

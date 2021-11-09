@@ -52,7 +52,7 @@ i{
         <div class="mt-4">
             <div class="d-flex p-5">
                 <i class="bi bi-cart4"></i>
-                <h4>RESUMEN DE PEDIDO</h4>
+                <h4>FACTURA</h4>
             </div>
             <div class="row mb-4">
             	<div class="col">
@@ -151,9 +151,7 @@ i{
 		</div>
 		
 		
-		<div class="d-flex justify-content-end">
-		<button type="submit" name="Terminar y pagar" value="Terminar y pagar" class="btn btn-primary mt-5">Terminar y pagar</button>
-		</div>
+		
         </div>
 
 

