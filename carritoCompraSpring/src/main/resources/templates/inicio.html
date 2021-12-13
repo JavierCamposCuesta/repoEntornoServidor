@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:ts="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+	
+	<div id="general">
+		<h1>La Tienda de Pepe</h1>
+		<div id="titulo">
+			<div id="titulo"><img src="/imagenes/logoSinFondo.png">
+			<p>En <b>La Tienda de Pepe</b> vas encontrarar todo lo necesario para tu zona Gaming.</p></div>
+
+		</div>
+		<div>
+			<div id="cuadro">
+				<form method="post" name="Acceso" th:object="${usuario}" th:action="@{/inicio/catalogo}">
+					<input type="text" name="nickName" placeholder="Nombre de usuario" th:field = "*{nickName}">
+					<input type="password" name="pass" placeholder="Contraseña" th:field="*{pass}">
+					<input type="submit" name="Entrar" value="Entrar" class="entrar" >
+				</form>
+			<a href="#" class="olvidoPass"><p>¿Has olvidado la contraseña?</p></a>
+			
+		 
+			<div id="botonFalso"><p>Crear nueva cuenta</p></div>
+	
+	
+			</div>
+		
+	</div>
+
+		
+	</div>
+	<div id="debajoDelCuadro"><p><b>Crea una cuenta</b> y podrás subscribirte a nuestras exclusivas ofertas</p></div>
+	
+</body>
+</html>

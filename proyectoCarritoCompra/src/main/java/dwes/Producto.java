@@ -34,9 +34,16 @@ public Producto( String id, String nombre, String descripcion,  double precio, S
 	this.descripcion = descripcion;
 	this.precio= precio;
 	this.cantidad = cantidad;
+	
 }
 
-
+/**
+ * Metodo para calcular el total de productos por el precio
+ * @return el total de la cantidad por el precio
+ */
+public double getImporteTotal() {
+	return this.precio * this.cantidad;
+}
 
 public int getCantidad() {
 	return cantidad;
