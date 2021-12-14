@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -11,23 +12,24 @@ public class Usuario {
 	private String email;
 	private String pass;
 	
-	private HashSet<Pedido> listaPedidos = new HashSet<Pedido>();
+	public ArrayList<Pedido> listaPedidos = new ArrayList<Pedido>();
 	
 	
 
 	public Usuario() {
 		
 	}
-	public Usuario(String nickName, String nombre, String telefono, String direccion, String pass) {
+	public Usuario(String nickName, String nombre, String telefono, String direccion, String pass, String email) {
 		this.nickName = nickName;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.direccion = direccion;
 		this.pass = pass;
+		this.email=email;
 	}
 	
 	public void addPedido(Pedido pedido) {
-		listaPedidos.add(pedido);
+		listaPedidos.add(0, pedido);
 	}
 	
 	
@@ -38,7 +40,7 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public HashSet<Pedido> getListaPedidos() {
+	public ArrayList<Pedido> getListaPedidos() {
 		return listaPedidos;
 	}
 	public String getNickName() {

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -7,7 +8,7 @@ public class Pedido {
 	//La referencia se ira incrementa a la vez que se vayan creando nuevos pedidos
 	private int ref = 0;
 	private static int contador=0;
-	private HashSet<Producto> productos = new HashSet<Producto>();
+	public HashSet<Producto> productos = new HashSet<Producto>();
 	private String direccion;
 	private String telefono;
 	private String email;
@@ -19,9 +20,13 @@ public class Pedido {
 	private Double iva;
 	//importe total es el importe + envio + iva
 	private Double importeTotal;
+	private LocalDate fecha;
 	
+	public Pedido(int ref) {
+		this.ref = ref;
+	}
 	public Pedido() {
-		this.ref= contador;
+		this.ref = contador;
 		contador++;
 	}
 	
@@ -35,6 +40,8 @@ public class Pedido {
 		this.email = email;
 		this.costeEnvio = costeEnvio;
 		this.metodoPago = metodoPago;
+		this.fecha = LocalDate.now();
+		
 		calcularImporte();
 		contador++;
 	}
@@ -56,6 +63,12 @@ public class Pedido {
 
 	public int getRef() {
 		return ref;
+	}
+	
+	
+
+	public LocalDate getFecha() {
+		return fecha;
 	}
 
 	public void setRef(int ref) {
@@ -103,10 +116,13 @@ public class Pedido {
 	}
 
 	public Double getImporte() {
+		importe = Math.round(importe * Math.pow(10, 2)) / Math.pow(10, 2);
+
 		return importe;
 	}
 
 	public void setImporte(Double importe) {
+		
 		this.importe = importe;
 	}
 	
@@ -120,6 +136,8 @@ public class Pedido {
 	}
 
 	public Double getIva() {
+		iva = Math.round(iva * Math.pow(10, 2)) / Math.pow(10, 2);
+
 		return iva;
 	}
 
@@ -128,6 +146,8 @@ public class Pedido {
 	}
 
 	public Double getImporteTotal() {
+		importeTotal = Math.round(importeTotal * Math.pow(10, 2)) / Math.pow(10, 2);
+
 		return importeTotal;
 	}
 
@@ -146,12 +166,15 @@ public class Pedido {
 	
 
 	public Double getTotalConIva() {
+		totalConIva = Math.round(totalConIva * Math.pow(10, 2)) / Math.pow(10, 2);
 		return totalConIva;
 	}
 
 	public void setTotalConIva(Double totalConIva) {
 		this.totalConIva = totalConIva;
 	}
+	
+	
 
 	/**
 	 * Los pedidos se identificaran por la referencia

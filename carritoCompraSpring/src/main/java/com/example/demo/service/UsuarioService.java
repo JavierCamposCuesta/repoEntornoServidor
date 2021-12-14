@@ -9,7 +9,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-
+import com.example.demo.model.Pedido;
+import com.example.demo.model.Producto;
 import com.example.demo.model.Usuario;
 
 @Service
@@ -30,10 +31,10 @@ public class UsuarioService {
 	@PostConstruct
 	public void init() {
 		listaUsuarios.addAll(Arrays.asList(
-				new Usuario("JCampos", "Javier Garcia", "675446757", "Huelva, 23", "holaKAse"), 
-				new Usuario("Antonio123", "Antonio Perez", "675446757", "Cadiz 12", "passAntonio"), 
-				new Usuario("user", "", "", "", "user"),
-				new Usuario("pepe", "Pepe Campos", "675446757", "Sevilla 22", "pepe")));
+				new Usuario("JCampos", "Javier Garcia", "675446757", "Huelva, 23", "holaKAse", "the__campos@hotmail.com"), 
+				new Usuario("Antonio", "Antonio Perez", "675446757", "Cadiz 12", "passAntonio","xulitoVacilon@hotmail.com"), 
+				new Usuario("user", "", "", "", "user", "xulitoVacilon@hotmail.com"),
+				new Usuario("pepe", "Pepe Campos", "675446757", "Sevilla 22", "pepe", "xulitoVacilon@hotmail.com")));
 	}
 	
 	public HashSet<Usuario> findAll(){
@@ -41,18 +42,9 @@ public class UsuarioService {
 	}
 	
 	public boolean comprobarUsuario(Usuario usuario) {
-		boolean encontrado = false;
-		for (Usuario usuarioExistente : listaUsuarios) {
-			if(usuarioExistente.getNickName().equals(usuario.getNickName()) && usuarioExistente.getPass().equals(usuario.getPass())) {
-				encontrado = true;
-			}
-			else {
-				encontrado=false;
-			}
-			
-		}
-		
-		return encontrado;
+
+		return listaUsuarios.contains(usuario);
+
 	}
 	
 	
@@ -61,6 +53,23 @@ public class UsuarioService {
 		Usuario usuario;
 		usuario = listaUsuariosArrayList.get(listaUsuariosArrayList.indexOf(object));
 		return usuario;
+		
+	}
+	
+	public Pedido darPedido(Pedido pedidoEditar, Usuario usuario) {
+		return usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoEditar));
+		
+	}
+	
+	public void modificarPedido (Pedido pedidoBuscar, Usuario usuario, String metodoPago, Double costeEnvio, String direccion, String telefono, String email) {
+		
+		
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).setMetodoPago(metodoPago);
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).setCosteEnvio(costeEnvio);
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).setDireccion(direccion);
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).setTelefono(telefono);
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).setEmail(email);
+		usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).calcularImporte();;
 		
 	}
 	

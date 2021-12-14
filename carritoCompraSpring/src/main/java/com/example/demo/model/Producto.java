@@ -85,7 +85,10 @@ public class Producto {
 
 
 	public double getImporteTotal() {
-		return this.precio * this.cantidad;
+		double resultado = this.precio * this.cantidad;
+		
+		resultado = Math.round(resultado * Math.pow(10, 2)) / Math.pow(10, 2);
+		return resultado;
 	}
 
 	public void setImporteTotal(double importeTotal) {

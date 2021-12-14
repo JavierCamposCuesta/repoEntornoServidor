@@ -8,10 +8,19 @@
 </head>
 <body>
 	<div class="container">
-           <form method="post" class="d-flex justify-content-end mb-5">
-         			<button type="submit" name="Ir al carrito" value="Ir al carrito" class="btn btn-primary mt-5"><i class="bi bi-cart-plus-fill"> Ir al carrito</i></button>
-                 	
-             	</form>
+	<div class="d-flex justify-content-end p-4">
+			<a th:href="@{/inicio/logout}" class="btn btn-danger">Logout</a>
+	</div>
+	
+	<div class="d-flex w-50" style="margin-left: 80%;">
+          <form method="post" th:action="@{/inicio/carrito}" class="d-flex justify-content-end">
+   				<button type="submit" name="Ir al carrito" value="Ir al carrito" class="btn btn-primary mt-5"><i class="bi bi-cart-plus-fill"> Ir al carrito</i></button>
+       		</form>
+            
+            <form method="post" th:action="@{/inicio/verPedidos}" class="d-flex justify-content-end" style="margin-left: 10px;">
+   				<button type="submit" name="Ver pedidos" value="Ver pedidos" class="btn btn-primary mt-5"><i class="bi bi-cart-plus-fill"> Mis pedidos</i></button>
+       	</form>
+	</div>
           <h1>Hola, ¿Qué desea comprar?</h1>
 
        <!-- Recorremos la lista de productos que tenemos en sesion y vamos creando el html con cada uno de los productos -->

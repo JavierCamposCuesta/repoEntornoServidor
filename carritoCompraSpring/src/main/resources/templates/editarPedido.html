@@ -40,29 +40,14 @@ i {
 </style>
 <body>
 	<div class="container">
-	<div th:if="${productosEnCarrito.size()==0}" style="margin-top: 150px">
-	<div class="d-flex justify-content-end p-4">
-			
-			<a href="" class="btn btn-danger">Logout</a>
-		</div>
-		<div class="alert alert-success" role="alert">
-  			<h4 class="alert-heading">El carrito está vacío!</h4>
-  			<p>Dirígete a nuestro catálogo y añade productos al carrito.</p>
-  			<hr>
-  			<p class="mb-0">Nuestros precios son imbatibles.</p>
-		</div>
-		<div class="d-grid gap-2 col-6 mx-auto">
-  			<a th:href="@{/inicio/catalogo}" class="btn btn-primary">Catálogo</a>
- 			 
-		</div>
-	</div>
-	<div th:if="${productosEnCarrito.size()>0}">
 	
 	
+
 		<!-- Boton de logout -->
 		<div class="d-flex justify-content-end p-4">
 			<a th:href="@{/inicio/logout}" class="btn btn-danger">Logout</a>
 		</div>
+		
 		<div class="d-flex justify-content-end p-4">
 			<a th:href="@{/inicio/catalogo}" class="btn btn-primary">Catálogo</a>
 		</div>
@@ -76,7 +61,7 @@ i {
 					<h4>Método de envío</h4>
 				</div>
 
-	<form th:action="@{/inicio/factura}" method="post">
+	<form th:action="@{/inicio/facturaEditada}" method="post">
 					<div class="d-flex">
 						<input type="radio" name="costeEnvio" value="0" checked
 							class="mt-4"> <img
@@ -147,21 +132,21 @@ i {
 					<div class="d-flex">
 
 						<p class="mt-4 ">Dirección de envío</p>
-						<input type="text" name="direccion" th:value="${usuario.getDireccion() }"
+						<input type="text" name="direccion" th:value="${pedido.getDireccion() }"
 							class="mt-4 form-control">
 					</div>
 
 					<div class="d-flex">
 
 						<p class="mt-4">Teléfono de contacto</p>
-						<input type="text" th:name="telefono" th:value="${usuario.getTelefono() }"
+						<input type="text" th:name="telefono" th:value="${pedido.getTelefono() }"
 							class="mt-4 form-control">
 					</div>
 
 					<div class="d-flex">
 
 						<p class="mt-4">Email</p>
-						<input type="email" name="email" th:value="${usuario.getEmail() }"
+						<input type="email" name="email" th:value="${pedido.getEmail() }"
 							class="mt-4 form-control">
 					</div>
 
@@ -200,16 +185,14 @@ i {
 
 				<!-- ######### EL BOTON DE PASAR A FACTURA ESTA AQUI
             	LO PONGO AQUI PARA QUE NO SE MEZCLE CON EL FORMULARIO DE BORRAR PRODUCTO
-            	DE ESTA FORMA NO ESTA DENTRO DEL BUCLE QUE CREARA LOS PRODUCTO Y SOLO APARECERA UNA VEZ 
-            	||||||||||ESTE BOTON SE OCULTARÁ CUANDO NO HAYA NINGÚN PRODUCTO-->
+            	DE ESTA FORMA NO ESTA DENTRO DEL BUCLE QUE CREARA LOS PRODUCTO Y SOLO APARECERA UNA VEZ -->
 				<div class="d-flex justify-content-end">
 					<button type="submit" name="pagar" value="pagar"
 						class="btn btn-primary mt-5">Terminar y pagar</button>
 				</div>
-				
 			</div>
 
-			<div th:each="producto: ${productosEnCarrito}">
+			<div th:each="producto: ${pedido.productos}">
 				<div class="row mb-4">
 					<div class="col colAlineadoCentro">
 						<img class="imagenPedido" th:src="${producto.getImagen() }">
@@ -226,7 +209,8 @@ i {
 
 						<input type="number" name="cantidad"
 							th:value="${producto.getCantidad()}" style="width: 50px;" min="1">
-
+						<input type="hidden" name="ref"
+							th:value="${pedido.getRef()}">
 					</div>
 					<div class="col colAlineadoCentro">
 						<!-- Este input se creará por cada producto que haya en la cesta -->
@@ -243,9 +227,7 @@ i {
 					</div>
 					
 	</form>
-
 			
-			</div>
 			</div>
 	</div>
 

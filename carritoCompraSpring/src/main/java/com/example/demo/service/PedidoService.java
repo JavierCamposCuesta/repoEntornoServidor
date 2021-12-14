@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Pedido;
 import com.example.demo.model.Producto;
+import com.example.demo.model.Usuario;
 
 
 @Service
@@ -92,8 +93,24 @@ public class PedidoService {
 	}
 	
 	public Pedido mostrarPedido() {
-		System.out.println(nuevoPedido.getDireccion() + "fsfdf");
+		
 		return nuevoPedido;
+	}
+	
+	
+	
+	public boolean borrarPedido (Pedido pedidoBorrar, Usuario usuario) {
+		return usuario.listaPedidos.remove(pedidoBorrar);
+		
+	}
+	
+	public void modificarCantidadesEditar (Integer[] cantidades, Pedido pedidoBuscar, Usuario usuario) {
+		int contador=0;
+System.out.println(usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).productos);
+		for (Producto producto: usuario.listaPedidos.get(usuario.listaPedidos.indexOf(pedidoBuscar)).productos ) {
+			producto.setCantidad(cantidades[contador]);
+			contador++;
+		}
 	}
 
 	

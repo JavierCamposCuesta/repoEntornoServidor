@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.Pedido;
 import com.example.demo.model.Producto;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.PedidoService;
@@ -38,6 +39,13 @@ public class MainController {
 	
 	@Autowired
 	private PedidoService pedidoService;
+	
+//	###### IR AL INICIO DESDE LOCALHOST
+	@GetMapping("/")
+	public String irInicio(Model model) {
+		return "redirect:/inicio";
+	}
+	
 	
 	
 //	###### IR AL INICIO
@@ -114,9 +122,11 @@ public class MainController {
 	public String carrito(Model model) {
 
 		model.addAttribute("productosEnCarrito", pedidoService.mostrarProductosEnCarrito());
+		model.addAttribute("usuario", usuarioService.darUsuario(sesion.getAttribute("usuario"))); 
 		String respuesta = "inicio";
 		if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
 			//Si existe la sesion y el usuario esta logueado lo mandamos al catalogo
+//			model.addAttribute("numeroProductos", pedidoService.mostrarProductosEnCarrito().s)
 			respuesta = "carrito";
 		}
 		else {
@@ -195,8 +205,7 @@ public class MainController {
 		
 		pedidoService.modificarCantidades(cantidades);
 		pedidoService.crearPedido(metodoPago, costeEnvio, direccion, telefono, email);
-		System.out.println(pedidoService.mostrarPedido() + "fNo funciona");
-		System.out.println(pedidoService.mostrarProductosEnCarrito().size() + "fNo funciona");
+		
 		
 		
 
@@ -216,10 +225,8 @@ public class MainController {
 		if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
 			//Si existe la sesion y el usuario esta logueado lo mandamos a la factura
 			 usuarioService.darUsuario(sesion.getAttribute("usuario")).addPedido(pedidoService.mostrarPedido());
-			 System.out.println(usuarioService.darUsuario(sesion.getAttribute("usuario")).getListaPedidos());
-			 model.addAttribute("listaPedidos", usuarioService.darUsuario(sesion.getAttribute("usuario")).getListaPedidos());
 			
-			respuesta = "pedidos";
+			respuesta = "redirect:/inicio/verPedidos";
 		}
 		else {
 			
@@ -241,7 +248,173 @@ public class MainController {
 	
 	
 	
-	//TODO cuando pulso el boton de añadir tengo que crear el nuevo producto en el getmapping
+	//######## VER PEDIDOS
+	@GetMapping("inicio/verPedidos")
+	public String verPedido(Model model) {
+		
+
+		
+		String respuesta = "inicio";
+		if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+			//Si existe la sesion y el usuario esta logueado lo mandamos a la factura
+			 
+			 System.out.println(usuarioService.darUsuario(sesion.getAttribute("usuario")).getListaPedidos() +"a ver que pasa");
+			 model.addAttribute("listaPedidos", usuarioService.darUsuario(sesion.getAttribute("usuario")).getListaPedidos());
+			
+			respuesta = "pedidos";
+		}
+		else {
+			
+			//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+			respuesta = "redirect:";
+		}
+		
+			return respuesta;
+		
+	}
+
+	
+	@PostMapping("inicio/verPedidos") 
+	public String verPedido() {
+
+		return "redirect:/inicio/verPedidos";
+		
+	}
+	
+	
+	
+	//######## BORRAR PEDIDOS
+	//Borrar producto del resumen de pedido
+		//La id la mandamos al cliclar un enlace, y viaje en la url, por lo que solo necesitamos un get
+		@GetMapping("inicio/borrarPedido/{ref}")
+		public String borrarPedido(@PathVariable(value="ref")int refPedido) {
+
+			String respuesta = "inicio";
+			if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+				Pedido pedidoBorrar = new Pedido(refPedido);
+				pedidoService.borrarPedido(pedidoBorrar, usuarioService.darUsuario(sesion.getAttribute("usuario")));
+				respuesta = "redirect:/inicio/verPedidos/";
+			}
+			else {
+				//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+				respuesta = "redirect:";
+			}
+			
+				return respuesta;
+			
+		}
+		
+		
+		//######## EDITAR PEDIDO
+		@GetMapping("inicio/editarPedido/{ref}")
+		public String editarPedido(@PathVariable(value="ref")int refPedido, Model model) {
+
+			
+			model.addAttribute("usuario", usuarioService.darUsuario(sesion.getAttribute("usuario"))); 
+			String respuesta = "inicio";
+			if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+				//Si existe la sesion y el usuario esta logueado lo mandamos al catalogo
+				Pedido pedidoEditar = new Pedido(refPedido);
+				usuarioService.darPedido(pedidoEditar, usuarioService.darUsuario(sesion.getAttribute("usuario")));
+				model.addAttribute("pedido", usuarioService.darPedido(pedidoEditar, usuarioService.darUsuario(sesion.getAttribute("usuario"))));
+				
+				respuesta = "editarPedido";
+			}
+			else {
+				//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+				respuesta = "redirect:";
+			}
+			
+				return respuesta;
+			
+		}
+		
+		
+		//######## IR A LA FACTURA EDITADA
+		@GetMapping("inicio/facturaEditada")
+		public String facturaEditada() {
+			
+				return "redirect:";
+		}
+
+		
+		@PostMapping("inicio/facturaEditada") 
+		public String facturaEditada(
+				Model model,
+				@RequestParam(name= "costeEnvio") Double costeEnvio,
+				@RequestParam(name= "metodoPago") String metodoPago,
+				@RequestParam(name= "direccion") String direccion,
+				@RequestParam(name= "telefono") String telefono,
+				@RequestParam(name= "email") String email,
+				@RequestParam(name= "cantidad") Integer[] cantidades,
+				@RequestParam(name= "ref") int ref
+				) {
+			
+
+
+			String respuesta = "inicio";
+			if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+				Pedido pedidoBuscar = new Pedido(ref);
+				pedidoService.modificarCantidadesEditar(cantidades, pedidoBuscar, usuarioService.darUsuario(sesion.getAttribute("usuario")));
+				usuarioService.modificarPedido(pedidoBuscar, usuarioService.darUsuario(sesion.getAttribute("usuario")), metodoPago, costeEnvio, direccion, telefono, email);
+				
+				model.addAttribute("pedido", usuarioService.darPedido(pedidoBuscar, usuarioService.darUsuario(sesion.getAttribute("usuario"))));
+				model.addAttribute("usuario", sesion.getAttribute("usuario"));
+				//Si existe la sesion y el usuario esta logueado lo mandamos a la facturaEditada
+
+				respuesta = "facturaEditada";
+			}
+			else {
+				//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+				respuesta = "redirect:";
+			}
+			
+				return respuesta;
+			
+		}
+		
+		
+		
+		//######## VER FACTURA
+				@GetMapping("inicio/verFactura/{ref}")
+				public String verFactura(@PathVariable(value="ref")int refPedido, Model model) {
+
+					
+					model.addAttribute("usuario", usuarioService.darUsuario(sesion.getAttribute("usuario"))); 
+					String respuesta = "inicio";
+					if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+						//Si existe la sesion y el usuario esta logueado lo mandamos al catalogo
+						Pedido pedidoEditar = new Pedido(refPedido);
+						usuarioService.darPedido(pedidoEditar, usuarioService.darUsuario(sesion.getAttribute("usuario")));
+						model.addAttribute("pedido", usuarioService.darPedido(pedidoEditar, usuarioService.darUsuario(sesion.getAttribute("usuario"))));
+						
+						respuesta = "verFactura";
+					}
+					else {
+						//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+						respuesta = "redirect:";
+					}
+					
+						return respuesta;
+					
+				}
+
+				
+				
+				
+				
+				//######## CERRAR SESION
+				@GetMapping("inicio/logout")
+				public String logout() {
+
+					sesion.invalidate();
+						return "redirect:";
+					
+				}
+		
+		
+	
+	
 	
 	
 }

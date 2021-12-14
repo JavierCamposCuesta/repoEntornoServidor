@@ -30,33 +30,106 @@ i {
 </style>
 
 <body>
-	<div class="container">
+	<div class="container p-5">
 
+		<!-- Boton de logout -->
 		<div class="d-flex justify-content-end p-4">
-			Bienvenid@ máquina
-			</h5>
-			<a href="<%= request.getContextPath()+"/Logout" %>" class="btn
-				btn-danger">Logout</a>
+			<a th:href="@{/inicio/logout}" class="btn btn-danger">Logout</a>
 		</div>
 		
-		<!-- ##### Creamos el boton de finalizar el pedido -->
-		<form th:action="@{/inicio/addPedido}">
-		<div class="d-flex justify-content-end">
-					<button type="submit" name="pagar" value="pagar"
-						class="btn btn-primary mt-5">Finalizar pedido</button>
-				</div>
-		</form>
+		<div class="d-flex justify-content-end p-4">
+			<a th:href="@{/inicio/catalogo}" class="btn btn-primary">Catálogo</a>
+		</div>
+		
 
-		<div class="flex-row"
+		<div class="flex-row mt-5"
 			style="background-color: rgba(255, 226, 145, 0.603);">
+			<div>
+				<h3 class="p-5">Aún no haz realizado ningún pedido</h3>
+			</div>
+			<div class="row mb-4" th:if="${listaPedidos.size()>0}">
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Referencia</b>
+						</h4>
+					</div>
+
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Fecha pedido</b>
+						</h4>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Importe total</b>
+						</h4>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Ver</b>
+						</h4>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Modificar</b>
+						</h4>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h4>
+							<b>Borrar</b>
+						</h4>
+					</div>
+					<div class="col colAlineadoCentro">
+						
+					</div>
+					<div class="col colAlineadoCentro">
+						
+					</div>
+
 			<div th:each="pedido: ${listaPedidos}">
-				<div class="d-flex">
-					<h3 th:text="${pedido.getRef() }"></h3>
-					<h5 th:text="${pedido.getImporteTotal() }"></h5>
-					<a th:href="@{/inicio/borrarProducto/} + ${pedido.ref}"><i class="bi bi-trash"></i></a>
-					<a th:href="@{/inicio/borrarProducto/} + ${pedido.ref}"><i class="bi bi-eye"></i></a>
-					<a th:href="@{/inicio/borrarProducto/} + ${pedido.ref}"><i class="bi bi-pencil"></i></a>
+				<div class="row mb-4" >
+				
+					<div class="col colAlineadoCentro">
+						<h6>
+							<b>#</b>
+							<b th:text="${pedido.getRef() }"></b>
+						</h6>
+					</div>
+
+					<div class="col colAlineadoCentro">
+						<h6>
+							<b th:text="${pedido.getFecha() }"></b>
+						</h6>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h6>
+							<b th:text="${pedido.getImporteTotal() }"></b>
+							<b>€</b>
+						</h6>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h6>
+							<a th:href="@{/inicio/verFactura/} + ${pedido.ref}"><i class="bi bi-eye"></i></a>
+						</h6>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h6>
+							<a th:href="@{/inicio/editarPedido/} + ${pedido.ref}"><i class="bi bi-pencil"></i></a>
+						</h6>
+					</div>
+					<div class="col colAlineadoCentro">
+						<h6>
+							<a th:href="@{/inicio/borrarPedido/} + ${pedido.ref}"><i class="bi bi-trash"></i></a>
+						</h6>
+					</div>
+					<div class="col colAlineadoCentro">
+						
+					</div>
+					<div class="col colAlineadoCentro">
+						
+					</div>
 				</div>
+			</div>
 			</div>
 
 

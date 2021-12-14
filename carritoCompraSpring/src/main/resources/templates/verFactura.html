@@ -38,18 +38,26 @@ i {
 		</div>
 		
 		<!-- ##### Creamos el boton de finalizar el pedido -->
-		<form th:action="@{/inicio/addPedido}">
+		<form th:action="@{/inicio/verPedidos}">
 		<div class="d-flex justify-content-end">
 					<button type="submit" name="pagar" value="pagar"
-						class="btn btn-primary mt-5">Finalizar pedido</button>
-				</div>
+						class="btn btn-primary mt-5">Mis Pedidos</button>
+		</div>
 		</form>
+		<div class="d-flex justify-content-end p-4">
+			<a th:href="@{/inicio/catalogo}" class="btn btn-primary">Catálogo</a>
+		</div>
+		
 
 		<div class="d-flex flex-row"
 			style="background-color: rgba(255, 226, 145, 0.603);">
 
 
 			<div class="mt-4 w-100">
+			<div class="d-flex">
+			<h2>Resumen de pedido REF #</h2>
+			<h2 th:text="${pedido.getRef() }"></h2>
+			</div>
 				<div class="row w-100 ">
 				
 					<div class="p-5 col-6">
