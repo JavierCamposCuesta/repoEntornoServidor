@@ -31,31 +31,26 @@
 		</div>
 		<div>
 			<div id="cuadro">
-				<form method="post" name="Acceso" th:object="${usuario}" th:action="@{/inicio/catalogo}">
-					<input type="text" name="nickName" placeholder="Nombre de usuario" th:field = "*{nickName}">
+				<form method="post" name="Acceso" th:object="${usuario}" th:action="@{/inicio/addUsuario}">
+					<input type="text" name="nickName" placeholder="Nick de usuario" th:field = "*{nickName}">
+					<input type="text" name="name" placeholder="Nombre y apellidos" th:field = "*{nombre}">
+					<input type="text" name="direccion" placeholder="Dirección" th:field = "*{direccion}">
+					<input type="text" name="telefono" placeholder="Teléfono" th:field = "*{telefono}">
+					<input type="email" name="email" placeholder="Email" th:field = "*{email}">
 					<input type="password" name="pass" placeholder="Contraseña" th:field="*{pass}">
-					<input type="submit" name="Entrar" value="Entrar" class="entrar" >
+					<input type="submit" name="Entrar" value="Registrar Usuario" class="entrar" >
 				</form>
-			<a href="#" class="olvidoPass"><p>¿Has olvidado la contraseña?</p></a>
+				
+			
 			
 		 
-			<div><a th:href="@{/inicio/registro}" class="btn btn-primary mt-2 mb-2">Crear Cuenta</a></div>
+			<div><a th:href="@{/inicio}" class="btn btn-primary mt-2 mb-2">Iniciar sesión</a></div>
+			
 	
-		<div class="alert alert-success" role="alert" th:if="${nuevoUsuario=='disponible'}">
- 			 Cuenta registrada con éxito, puede iniciar sesión!
-		</div>
-		<div class="alert alert-danger" role="alert" th:if="${nuevoUsuario=='noDisponible'}">
-  			Nick de usuario no disponible, elija otro
-		</div>
-		<div class="alert alert-danger" role="alert" th:if="${nuevoUsuario=='incorrecto'}">
-  			Datos incorrectos
-		</div>
-		<div th:if="${nuevoUsuario==''}">
-  			
-		</div>
 			</div>
 		
 	</div>
+	
 
 		
 	</div>

@@ -73,6 +73,10 @@ public class UsuarioService {
 		
 	}
 	
+	public boolean addUsuario(Usuario newUsuario) {
+		return listaUsuarios.add(newUsuario);
+	}
+	
 	
 	
 	

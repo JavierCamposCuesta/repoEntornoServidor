@@ -52,6 +52,18 @@ public class MainController {
 	@GetMapping("/inicio")
 	public String listaUsuario(Model model) {
 	
+		if(sesion.getAttribute("nuevoUsuario")!= null && sesion.getAttribute("nuevoUsuario").equals("disponible")) {
+			model.addAttribute("nuevoUsuario", "disponible");
+		}
+		if(sesion.getAttribute("nuevoUsuario")!= null && sesion.getAttribute("nuevoUsuario").equals("noDisponible")) {
+			model.addAttribute("nuevoUsuario", "noDisponible");
+		}
+		if(sesion.getAttribute("nuevoUsuario")!= null && sesion.getAttribute("nuevoUsuario").equals("noDisponible")) {
+			model.addAttribute("nuevoUsuario", "");
+		}
+		if(sesion.getAttribute("nuevoUsuario")!= null && sesion.getAttribute("nuevoUsuario").equals("incorrecto")) {
+			model.addAttribute("nuevoUsuario", "incorrecto");
+		}
 		model.addAttribute("usuario", new Usuario());
 		return "inicio";
 	}
@@ -65,7 +77,7 @@ public class MainController {
 	public String comprobarUsuario(@ModelAttribute("usuario") Usuario usuario, Model model) {
 		
 		
-		
+		sesion.setAttribute("nuevoUsuario", "");
 		
 		//Con el nuevo usuario que creamos para hacer la comprobacion comprobamos a traves del metodo del servicio si el usuario existe, en cuyo caso lo mandaremos al catalogo
 		if(usuarioService.comprobarUsuario(usuario)) {
@@ -75,6 +87,7 @@ public class MainController {
 			return "redirect:/inicio/catalogo";
 		}
 		else {
+			sesion.setAttribute("nuevoUsuario", "incorrecto");
 			sesion.setAttribute("LOGUEADO", false);
 			return "redirect:";
 		}
@@ -411,7 +424,51 @@ public class MainController {
 						return "redirect:";
 					
 				}
+				
+				//######## RegistrarUsuario
+				@GetMapping("inicio/registro")
+				public String registro(Model model) {
+
+					model.addAttribute("usuario", new Usuario());
+						return "registro";
+					
+				}
 		
+				
+//				###### Registrar usuario
+			
+				@PostMapping("inicio/addUsuario") 
+				public String addUsuario(@ModelAttribute("usuario") Usuario usuario, Model model) {
+					if(usuarioService.addUsuario(usuario)) {
+						
+						sesion.setAttribute("nuevoUsuario", "disponible");
+					}
+					else {
+						sesion.setAttribute("nuevoUsuario", "noDisponible");
+					}
+						
+						
+						return "redirect:";
+					
+				}
+				
+				@GetMapping("inicio/addUsuario")
+				public String addUsuario(Model model) {
+					
+					model.addAttribute("productos", productoService.findAll());
+					String respuesta = "inicio";
+					if(sesion.getAttribute("LOGUEADO") != null && (boolean) sesion.getAttribute("LOGUEADO")) {
+						//Si existe la sesion y el usuario esta logueado lo mandamos al catalogo
+						respuesta = "catalogo";
+					}
+					else {
+						//Si el usuario no esta logado lo mandamos al getMapping del inicio, para que se loguee
+						respuesta = "redirect:";
+					}
+					
+						return respuesta;
+					
+				}
 		
 	
 	
