@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.model.Pedido;
 import com.example.demo.model.Producto;
 import com.example.demo.model.Usuario;
-import com.example.demo.repository.UsuarioRepository;
-import com.example.demo.service.LineaPedidoService;
+
 import com.example.demo.service.PedidoService;
 import com.example.demo.service.ProductoService;
 import com.example.demo.service.UsuarioService;
@@ -42,11 +41,7 @@ public class MainController {
 	@Autowired
 	private PedidoService pedidoService;
 	
-	@Autowired
-	private LineaPedidoService lineaPedidoService;
-	
-	@Autowired
-	private UsuarioRepository repositorioUsuario;
+
 	
 	
 //	###### IR AL INICIO DESDE LOCALHOST
