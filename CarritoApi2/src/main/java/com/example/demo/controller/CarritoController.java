@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.error.ApiError;
 import com.example.demo.error.LineaPedidoNotFoundException;
 import com.example.demo.error.PedidoNotFoundExeption;
 import com.example.demo.error.ProductoNotFoundExeption;
@@ -108,7 +111,7 @@ public class CarritoController {
 	
 	/**
 	 * Muestra todos los pedidos de la bd
-	 * @return un json con la lista de pedidos
+	 * @return un json con la lista de pedidos, si no hay devuelve una exepcion
 	 */
 		@GetMapping("/pedidos")
 		public ResponseEntity<List<Pedido>> listaPedidos() {
@@ -123,7 +126,7 @@ public class CarritoController {
 		
 		/**
 		 * Mostrar pedido de la bd por id
-		 * @return un json con el pedido
+		 * @return un json con el pedido en caso de que exista, si no devuelve una exepcion
 		 */
 		@GetMapping("/pedidos/{ref}")
 		public ResponseEntity<Pedido> darPedido(@PathVariable(value="ref")int ref) {
@@ -154,17 +157,24 @@ public class CarritoController {
 		
 		/**
 		 * Modificar pedido, le pasaremos una ref de pedido y un pedido con los datos que queremos modificarle al nuevo pedido
-		 * @return el pedido modificado
+		 * @return el pedido modificado en caso de que existiese, si no devulve una exepcion
 		 */
 		@PostMapping("/pedido/{ref}")
 		public ResponseEntity<Pedido>modificarPedido(@PathVariable(value="ref")int ref, @RequestBody Pedido pedido){
-			
-				
+			Pedido pedidoBuscar = pedidoService.findById(ref);
+			if(pedidoBuscar == null) {
+				throw new PedidoNotFoundExeption(ref);
+			}
+			else {
 				return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.modificarPedido(ref, pedido));
+			}
+				
+				
 		}
 		
 		/**
 		 * Añadir Linea de pedido, le pasaremos una ref de pedido y una linea de pedido y actualizaremos todo
+		 * Si el pedido o el producto no existe devolverá una exepcion
 		 * @return el pedido modificado
 		 */
 		@PostMapping("/pedido/{refPedido}/{idProducto}")
@@ -186,33 +196,37 @@ public class CarritoController {
 		
 		/**
 		 * Mostrar Linea de pedido, le pasaremos un id pedido  y nos devolverá todas las lineas de ese pedido
+		 * Si no existe el pedido devolverá una exepcion
 		 * @return el pedido modificado
 		 */
-		@GetMapping("/verLineasPedido/{refPedido}")
-		public ResponseEntity<LineaPedido> verLineasPedido(@PathVariable(value="refPedido")int refPedido){
+		@GetMapping("/pedido/{refPedido}/lineaPedido")
+		public ResponseEntity<List<LineaPedido>> verLineasPedido(@PathVariable(value="refPedido")int refPedido){
 			Pedido respuesta = pedidoService.findById(refPedido);
 			if(respuesta == null) {
 				throw new PedidoNotFoundExeption(refPedido);
 			}
 			else {
 				
-				
-//				Pedido pedidoRespuesta = pedidoService.addLineaPedido(refPedido, idProducto, lineaPedido);
 				return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.mostrarLineas(refPedido));
 				}
 		}
 		
 		/**
-		 * Este metodo recibirá un id de linea de pedido y una linea de pedido ya editada
+		 * Este metodo recibirá una ref de pedido , un  id de linea de pedido y una linea de pedido ya editada
+		 * En caso de no existir el pedido o la linea devolvera una exepcion correspondiente
+		 * @param ref se corresponde con la ref de pedido
 		 * @param id Se corresponde con el id de la linea de pedido
 		 * @param linea Le pasamos un json que se corresponda con la nueva linea de pedido, constará del producto y de las cantidades
-		 * @return
+		 * @return la linea de pedido ya editada
 		 */
-		@PutMapping("/editarLineaPedido/{id}")
-		public ResponseEntity<LineaPedido> editarLinea(@PathVariable Integer id, @RequestBody LineaPedido linea){
-			
+		@PutMapping("/pedido/{refPedido}/lineaPedido/{id}")
+		public ResponseEntity<LineaPedido> editarLinea(@PathVariable Integer refPedido, @PathVariable Integer id, @RequestBody LineaPedido linea){
+			Pedido pedidoBuscar = pedidoService.findById(refPedido);
 			LineaPedido resultado = this.pedidoService.buscarLinea(id);
-			if(resultado == null) {
+			if(pedidoBuscar == null) {
+				throw new PedidoNotFoundExeption(refPedido);
+			}
+			else if(resultado == null) {
 				throw new LineaPedidoNotFoundException(id);
 			}else {
 				resultado.setProducto(linea.getProducto());
@@ -225,19 +239,97 @@ public class CarritoController {
 		
 		
 		/**
-		 * Este metodo recibirá una ref de pedido y un id de usuario y borrará el pedido del usuario y actualizará tyodo
+		 * Metodo para borrar pedido, le pasamos una ref de pedido y un json
+		 * con un usuario, al cual le pertenece el pedido. En caso que no existe el pedido o el usuario devulve una exeption
+		 * @param ref
+		 * @param usuario
+		 * @return el pedido que ha borrado
 		 */
-		@GetMapping("/borrarPedido/{ref}/{idUsuario}")
-		public ResponseEntity<?> borrarPedido(@PathVariable Integer ref,@PathVariable String idUsuario){
+		@DeleteMapping("/pedido/{ref}")
+		public ResponseEntity<?> borrarPedido(@PathVariable Integer ref,@RequestBody Usuario usuario){
 			
 			Pedido pedido = pedidoService.findById(ref);
+			Usuario usuarioBuscar = usuarioService.findById(usuario.getNickName());
 			if(pedido == null) {
 				throw new PedidoNotFoundExeption(ref);
-			}else {
-				pedidoService.borrarPedido(ref, idUsuario);
-				return ResponseEntity.noContent().build();
+			}
+			else if(usuarioBuscar == null) {
+				throw new UsuarioNotFoundExeption(usuario.getNickName());
+			}
+			else {
+				pedidoService.borrarPedido(ref, usuario.getNickName());
+				return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 			}
 			
+		}
+		
+		/**
+		 * Metodo para borrar linea de pedido, le pasamos una ref de pedido y un id de linea por url, ademas le pasamos un json
+		 * con un usuario, al cual le pertenece el pedido. En caso que no existe el pedido o la linea devuelve una exeption
+		 * @param ref
+		 * @param usuario
+		 * @return el pedido que ha borrado
+		 */
+		@DeleteMapping("/pedido/{ref}/lineaPedido/{idLinea}")
+		public ResponseEntity<?> borrarLineaPedido(@PathVariable Integer ref, @PathVariable Integer idLinea, @RequestBody Usuario usuario){
+			
+			Pedido pedido = pedidoService.findById(ref);
+			Usuario usuarioBuscar = usuarioService.findById(usuario.getNickName());
+			LineaPedido lineaBuscar = pedidoService.buscarLinea(idLinea);
+			if(pedido == null) {
+				throw new PedidoNotFoundExeption(ref);
+			}
+			else if(usuarioBuscar == null) {
+				throw new UsuarioNotFoundExeption(usuario.getNickName());
+			}
+			else if(lineaBuscar == null) {
+				throw new LineaPedidoNotFoundException(idLinea);
+			}
+			else {
+				pedidoService.borrarLineaPedido(ref, usuario.getNickName(), idLinea);
+				return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+			}
+			
+		}
+		
+		@ExceptionHandler(ProductoNotFoundExeption.class)
+		public ResponseEntity<ApiError> handleProductoNoEncontrado(ProductoNotFoundExeption ex) {
+			ApiError apiError = new ApiError();
+			apiError.setEstado(HttpStatus.NOT_FOUND);
+			apiError.setFecha(LocalDateTime.now());
+			apiError.setMensaje(ex.getMessage());
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+		}
+		
+		@ExceptionHandler(PedidoNotFoundExeption.class)
+		public ResponseEntity<ApiError> handleProductoNoEncontrado(PedidoNotFoundExeption ex) {
+			ApiError apiError = new ApiError();
+			apiError.setEstado(HttpStatus.NOT_FOUND);
+			apiError.setFecha(LocalDateTime.now());
+			apiError.setMensaje(ex.getMessage());
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+		}
+		
+		@ExceptionHandler(UsuarioNotFoundExeption.class)
+		public ResponseEntity<ApiError> handleProductoNoEncontrado(UsuarioNotFoundExeption ex) {
+			ApiError apiError = new ApiError();
+			apiError.setEstado(HttpStatus.NOT_FOUND);
+			apiError.setFecha(LocalDateTime.now());
+			apiError.setMensaje(ex.getMessage());
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+		}
+		
+		@ExceptionHandler(LineaPedidoNotFoundException.class)
+		public ResponseEntity<ApiError> handleProductoNoEncontrado(LineaPedidoNotFoundException ex) {
+			ApiError apiError = new ApiError();
+			apiError.setEstado(HttpStatus.NOT_FOUND);
+			apiError.setFecha(LocalDateTime.now());
+			apiError.setMensaje(ex.getMessage());
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 		}
 
 	

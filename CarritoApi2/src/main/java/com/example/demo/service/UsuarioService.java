@@ -132,6 +132,7 @@ public class UsuarioService implements UsuarioServiceInterface{
 
 	@Override
 	public Usuario findById(String id) {
+		System.out.println(repositorio.findById(id).orElse(null));
 		return repositorio.findById(id).orElse(null);
 	}
 

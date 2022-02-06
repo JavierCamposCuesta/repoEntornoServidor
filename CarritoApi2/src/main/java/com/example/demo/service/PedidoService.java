@@ -169,9 +169,9 @@ public class PedidoService {
 	 * @param refPedido
 	 * @return devuelve la linea de pedido o null en caso de que no exista
 	 */
-	public LineaPedido mostrarLineas(int refPedido) {
+	public List<LineaPedido> mostrarLineas(int refPedido) {
 
-		return repositorioLineaPedido.findById(1).orElse(null);
+		return repositorioPedido.getById(refPedido).getLineasPedidos();
 		
 	}
 
@@ -208,9 +208,28 @@ public class PedidoService {
 		Pedido pedido =usuarioNuevo.getListaPedidos().get(posicion);
 		usuarioNuevo.getListaPedidos().remove(pedido);
 //		usuServ.saveUser(usuario);
-		Usuario aux = repositorioUsuario.getById(idUsuario);
-		aux.setListaPedidos(usuarioNuevo.getListaPedidos());
-		repositorioUsuario.save(aux);
+		Usuario usuarioGuardar = repositorioUsuario.getById(idUsuario);
+		usuarioGuardar.setListaPedidos(usuarioNuevo.getListaPedidos());
+		repositorioUsuario.save(usuarioGuardar);
+	}
+	
+	/**
+	 * Metodo para borrar un pedido, le pasamos la ref del pedido y el id del usuario y borramos el pedido y actualizamos el usuairo en la bd
+	 * @param refPedido
+	 * @param idUsuario
+	 */
+	public Pedido  borrarLineaPedido(int refPedido, String idUsuario, int idLinea) {
+			
+		Usuario usuarioModificar = repositorioUsuario.getById(idUsuario);
+		Pedido pedidoModificar = repositorioPedido.getById(refPedido);
+		LineaPedido lineaBorrar = repositorioLineaPedido.getById(idLinea);
+		
+		usuarioModificar.getListaPedidos().remove(pedidoModificar);
+		pedidoModificar.getLineasPedidos().remove(lineaBorrar);
+		usuarioModificar.getListaPedidos().add(pedidoModificar);
+		repositorioUsuario.save(usuarioModificar);
+//		repositorioPedido.save(pedidoModificar);
+		return pedidoModificar;
 	}
 
 	
